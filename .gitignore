@@ -96,3 +96,4 @@ build
 GPATH
 GRTAGS
 GTAGS
+./.gitignore
