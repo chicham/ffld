@@ -54,7 +54,7 @@ cached_(false), zero_(true)
 	
 	// Early return in case the root filters' sizes could not be determined
 	
-	cout << "Filter size " << sizes() << endl;
+	cout << "Filter size " << sizes.size() << endl;
 
 	if (sizes.size() != nbComponents)
 		return;
