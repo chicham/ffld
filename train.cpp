@@ -350,6 +350,7 @@ int main(int argc, char * argv[])
 	}
 	
 	// The mixture to train
+	cout << "N " << nbComponents << "Name " << name << endl;
 	Mixture mixture(nbComponents, scenes, name);
 
 	if (mixture.empty()) {
