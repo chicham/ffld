@@ -53,6 +53,9 @@ cached_(false), zero_(true)
 	const vector<pair<int, int> > sizes = FilterSizes(nbComponents, scenes, name);
 	
 	// Early return in case the root filters' sizes could not be determined
+	
+	cout << "Filter size " << sizes() << endl;
+
 	if (sizes.size() != nbComponents)
 		return;
 	
