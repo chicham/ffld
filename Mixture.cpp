@@ -55,7 +55,6 @@ cached_(false), zero_(true)
 	// Early return in case the root filters' sizes could not be determined
 	
 
-	std::cout << "Size" << sizes.size() << std::endl;
 	if (sizes.size() != nbComponents)
 		return;
 	
@@ -944,10 +943,27 @@ void Mixture::convolve(const HOGPyramid & pyramid,
 vector<pair<int, int> > Mixture::FilterSizes(int nbComponents, const vector<Scene> & scenes,
 											 Object::Name name)
 {
+					const string Names[80] =
+				{
+					"airplane", "apple", "backpack", "banana", "baseball bat",
+              "baseball glove", "bear", "bed", "bench", "bicycle", "bird",
+              "boat", "book", "bottle", "bowl", "broccoli", "bus", "cake",
+              "car", "carrot", "cat", "cell phone", "chair", "clock", "couch",
+              "cow", "cup", "dining table", "dog", "donut", "elephant",
+              "fire hydrant", "fork", "frisbee", "giraffe", "hair drier",
+              "handbag", "horse", "hot_dog", "keyboard", "kite", "knife",
+              "laptop", "microwave", "motorcycle", "mouse", "orange",
+              "oven", "parking meter", "person", "pizza", "potted plant",
+              "refrigerator", "remote", "sandwich", "scissors", "sheep",
+              "sink", "skateboard", "skis", "snowboard", "spoon", "sports ball",
+              "stop sign", "suitcase", "surfboard", "teddy bear", "tennis racket",
+              "tie", "toaster", "toilet", "toothbrush", "traffic light", "train",
+              "truck", "tv", "umbrella", "vase", "wine", "zebra"
+				};
+
+	std::cout << "Categories" << Names[name] << std::endl;
 	// Early return in case the filters or the dataset are empty
 	
-	std::cout << "Nb Components " << nbComponents<< std::endl;
-	std::cout << "Scene Empty " << scenes.empty() << std::endl;
 	if ((nbComponents <= 0) || scenes.empty())
 		return vector<pair<int, int> >();
 	
@@ -959,14 +975,12 @@ vector<pair<int, int> > Mixture::FilterSizes(int nbComponents, const vector<Scen
 			const Object & obj = scenes[i].objects()[j];
 			
 			if ((obj.name() == name) && !obj.difficult()){
-				std::cout << "(" << i << "," << j << ")" << std::endl;
 				ratios.push_back(static_cast<double>(obj.bndbox().width()) / obj.bndbox().height());
 			}
 		}
 	}
 	
 	// Early return if there is no object
-	std::cout << "Ratio empty" << ratios.empty() << std::endl;
 	if (ratios.empty())
 		return vector<pair<int, int> >();
 	
