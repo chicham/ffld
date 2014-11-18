@@ -54,7 +54,6 @@ cached_(false), zero_(true)
 	
 	// Early return in case the root filters' sizes could not be determined
 	
-	cout << "Filter size " << sizes.size() << endl;
 
 	if (sizes.size() != nbComponents)
 		return;
@@ -945,6 +944,9 @@ vector<pair<int, int> > Mixture::FilterSizes(int nbComponents, const vector<Scen
 											 Object::Name name)
 {
 	// Early return in case the filters or the dataset are empty
+	
+	cout << "Scene empty " << scenes.empty() << endl;
+	std::cout << "nbCached " << nbComponents << std::endl;
 	if ((nbComponents <= 0) || scenes.empty())
 		return vector<pair<int, int> >();
 	
