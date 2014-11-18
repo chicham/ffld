@@ -60,12 +60,30 @@ static inline Result content(const xmlNodePtr cur)
 
 Scene::Scene(const string & filename)
 {
-	const string Names[20] =
-	{
-		"aeroplane", "bicycle", "bird", "boat", "bottle", "bus", "car", "cat", "chair", "cow",
-		"diningtable", "dog", "horse", "motorbike", "person", "pottedplant", "sheep", "sofa",
-		"train", "tvmonitor"
-	};
+	// const string Names[20] =
+	// {
+	// 	"aeroplane", "bicycle", "bird", "boat", "bottle", "bus", "car", "cat", "chair", "cow",
+	// 	"diningtable", "dog", "horse", "motorbike", "person", "pottedplant", "sheep", "sofa",
+	// 	"train", "tvmonitor"
+	// };
+
+        const string Names[80] =
+        {
+            "airplane", "apple", "backpack", "banana", "baseball bat",
+            "baseball glove", "bear", "bed", "bench", "bicycle", "bird",
+            "boat", "book", "bottle", "bowl", "broccoli", "bus", "cake",
+            "car", "carrot", "cat", "cell phone", "chair", "clock", "couch",
+            "cow", "cup", "dining table", "dog", "donut", "elephant",
+            "fire hydrant", "fork", "frisbee", "giraffe", "hair drier",
+            "handbag", "horse", "hot dog", "keyboard", "kite", "knife",
+            "laptop", "microwave", "motorcycle", "mouse", "orange",
+            "oven", "parking meter", "person", "pizza", "potted plant",
+            "refrigerator", "remote", "sandwich", "scissors", "sheep",
+            "sink", "skateboard", "skis", "snowboard", "spoon", "sports ball",
+            "stop sign", "suitcase", "surfboard", "teddy bear", "tennis racket",
+            "tie", "toaster", "toilet", "toothbrush", "traffic light", "train",
+            "truck", "tv", "umbrella", "vase", "wine", "zebra"
+        };
 	
 	const string Poses[4] =
 	{
@@ -130,9 +148,9 @@ Scene::Scene(const string & filename)
 			while (cur2 != NULL) {
 				if (!xmlStrcmp(cur2->name, reinterpret_cast<const xmlChar *>("name"))) {
 					const string * iter =
-						find(Names, Names + 20, content<string>(cur2));
+						find(Names, Names + 80, content<string>(cur2));
 					
-					if (iter != Names + 20)
+					if (iter != Names + 80)
 						objects_.back().setName(static_cast<Object::Name>(iter - Names));
 				}
 				else if (!xmlStrcmp(cur2->name, reinterpret_cast<const xmlChar *>("pose"))) {

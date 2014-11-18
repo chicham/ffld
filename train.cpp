@@ -173,16 +173,35 @@ int main(int argc, char * argv[])
 				string arg = args.OptionArg();
 				transform(arg.begin(), arg.end(), arg.begin(), static_cast<int (*)(int)>(tolower));
 				
-				const string Names[20] =
+// Redefine names with categories
+// get number of categories from Names
+				// const string Names[LEN] =
+				// {
+				// 	"aeroplane", "bicycle", "bird", "boat", "bottle", "bus", "car", "cat", "chair",
+				// 	"cow", "diningtable", "dog", "horse", "motorbike", "person", "pottedplant",
+				// 	"sheep", "sofa", "train", "tvmonitor", ...
+				// };
+				const string Names[80] =
 				{
-					"aeroplane", "bicycle", "bird", "boat", "bottle", "bus", "car", "cat", "chair",
-					"cow", "diningtable", "dog", "horse", "motorbike", "person", "pottedplant",
-					"sheep", "sofa", "train", "tvmonitor"
+					"airplane", "apple", "backpack", "banana", "baseball bat",
+              "baseball glove", "bear", "bed", "bench", "bicycle", "bird",
+              "boat", "book", "bottle", "bowl", "broccoli", "bus", "cake",
+              "car", "carrot", "cat", "cell phone", "chair", "clock", "couch",
+              "cow", "cup", "dining table", "dog", "donut", "elephant",
+              "fire hydrant", "fork", "frisbee", "giraffe", "hair drier",
+              "handbag", "horse", "hot dog", "keyboard", "kite", "knife",
+              "laptop", "microwave", "motorcycle", "mouse", "orange",
+              "oven", "parking meter", "person", "pizza", "potted plant",
+              "refrigerator", "remote", "sandwich", "scissors", "sheep",
+              "sink", "skateboard", "skis", "snowboard", "spoon", "sports ball",
+              "stop sign", "suitcase", "surfboard", "teddy bear", "tennis racket",
+              "tie", "toaster", "toilet", "toothbrush", "traffic light", "train",
+              "truck", "tv", "umbrella", "vase", "wine", "zebra"
 				};
 				
-				const string * iter = find(Names, Names + 20, arg);
+				const string * iter = find(Names, Names + 80, arg);
 				
-				if (iter == Names + 20) {
+				if (iter == Names + 80) {
 					showUsage();
 					cerr << "\nInvalid name arg " << args.OptionArg() << endl;
 					return -1;
