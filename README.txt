@@ -1,3 +1,6 @@
+downloaded from http://charles.dubout.ch/en/coding.html
+
+
                           Implementation of the papers
 
                 "Exact Acceleration of Linear Object Detectors"

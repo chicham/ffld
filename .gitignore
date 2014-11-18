@@ -92,3 +92,7 @@
 ./._train.cpp
 ./._viewmixture.m
 ./._writemixture.m
+build
+GPATH
+GRTAGS
+GTAGS
