@@ -955,8 +955,6 @@ vector<pair<int, int> > Mixture::FilterSizes(int nbComponents, const vector<Scen
 		for (int j = 0; j < scenes[i].objects().size(); ++j) {
 			const Object & obj = scenes[i].objects()[j];
 			
-			std::cout << "Name" << obj.name() << std::endl;
-			std::cout << "Anno name" << name << std::endl;
 			if ((obj.name() == name) && !obj.difficult())
 				std::cout << "Width" << obj.bndbox().width() << "Height" << obj.bndbox().height() << "Ratio" << obj.bndbox().width() / obj.bndbox().height() <<std::endl;
 				ratios.push_back(static_cast<double>(obj.bndbox().width()) / obj.bndbox().height());
