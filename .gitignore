@@ -3,7 +3,6 @@
 ./._convertmodel4.m
 ./._convertmodel5.m
 ./._COPYING.txt
-./.git
 ./._HOGPyramid.cpp
 ./._HOGPyramid.h
 ./._INSTALL.txt
@@ -96,4 +95,3 @@ build
 GPATH
 GRTAGS
 GTAGS
-./.gitignore
