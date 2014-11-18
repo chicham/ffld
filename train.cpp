@@ -357,7 +357,6 @@ int main(int argc, char * argv[])
 		return -1;
 	}
 
-	cout << "Not empty" << endl;
 	
 	// Try to open the mixture
 	if (!model.empty()) {

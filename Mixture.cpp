@@ -55,6 +55,7 @@ cached_(false), zero_(true)
 	// Early return in case the root filters' sizes could not be determined
 	
 
+	std::cout << "Size" << sizes.size() << std::endl;
 	if (sizes.size() != nbComponents)
 		return;
 	
@@ -945,6 +946,8 @@ vector<pair<int, int> > Mixture::FilterSizes(int nbComponents, const vector<Scen
 {
 	// Early return in case the filters or the dataset are empty
 	
+	std::cout << "Nb Components " << nbComponents<< std::endl;
+	std::cout << "Scene Empty " << scenes.empty() << std::endl;
 	if ((nbComponents <= 0) || scenes.empty())
 		return vector<pair<int, int> >();
 	
@@ -956,12 +959,14 @@ vector<pair<int, int> > Mixture::FilterSizes(int nbComponents, const vector<Scen
 			const Object & obj = scenes[i].objects()[j];
 			
 			if ((obj.name() == name) && !obj.difficult()){
+				std::cout << "(" << i << "," << j << ")" << std::endl;
 				ratios.push_back(static_cast<double>(obj.bndbox().width()) / obj.bndbox().height());
 			}
 		}
 	}
 	
 	// Early return if there is no object
+	std::cout << "Ratio empty" << ratios.empty() << std::endl;
 	if (ratios.empty())
 		return vector<pair<int, int> >();
 	
