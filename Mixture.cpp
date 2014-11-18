@@ -58,7 +58,6 @@ cached_(false), zero_(true)
 	
 	// Initialize the models (with symmetry) to those sizes
 	models_.resize(2 * nbComponents);
-	cout << "nb componentsi " << nbComponents << endl;
 
 	for (int i = 0; i < nbComponents; ++i) {
 		models_[2 * i    ] = Model(sizes[i]);
