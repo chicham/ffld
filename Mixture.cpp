@@ -945,8 +945,6 @@ vector<pair<int, int> > Mixture::FilterSizes(int nbComponents, const vector<Scen
 {
 	// Early return in case the filters or the dataset are empty
 	
-	cout << "Scene empty " << scenes.empty() << endl;
-	std::cout << "nbCached " << nbComponents << std::endl;
 	if ((nbComponents <= 0) || scenes.empty())
 		return vector<pair<int, int> >();
 	
@@ -957,7 +955,10 @@ vector<pair<int, int> > Mixture::FilterSizes(int nbComponents, const vector<Scen
 		for (int j = 0; j < scenes[i].objects().size(); ++j) {
 			const Object & obj = scenes[i].objects()[j];
 			
+			std::cout << "Name" << obj.name() << std::endl;
+			std::cout << "Anno name" << name << std::endl;
 			if ((obj.name() == name) && !obj.difficult())
+				std::cout << "Width" << obj.bndbox().width() << "Height" << obj.bndbox().height() << "Ratio" << obj.bndbox().width() / obj.bndbox().height() <<std::endl;
 				ratios.push_back(static_cast<double>(obj.bndbox().width()) / obj.bndbox().height());
 		}
 	}
