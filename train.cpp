@@ -350,13 +350,14 @@ int main(int argc, char * argv[])
 	}
 	
 	// The mixture to train
-	cout << "N " << nbComponents << "Name " << name << endl;
 	Mixture mixture(nbComponents, scenes, name);
 
 	if (mixture.empty()) {
 		cerr << "Error initializing the mixture model" << endl;
 		return -1;
 	}
+
+	cout << "Not empty" << endl;
 	
 	// Try to open the mixture
 	if (!model.empty()) {

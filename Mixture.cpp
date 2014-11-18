@@ -956,12 +956,9 @@ vector<pair<int, int> > Mixture::FilterSizes(int nbComponents, const vector<Scen
 			const Object & obj = scenes[i].objects()[j];
 			
 			if ((obj.name() == name) && !obj.difficult()){
-				std::cout << "Width" << obj.bndbox().width() << "Height" << obj.bndbox().height() <<std::endl;
 				ratios.push_back(static_cast<double>(obj.bndbox().width()) / obj.bndbox().height());
 			}
 		}
-
-		std::cout << "Ratios size " << ratios.size() << std::endl;
 	}
 	
 	// Early return if there is no object
