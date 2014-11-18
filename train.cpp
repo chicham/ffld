@@ -189,7 +189,7 @@ int main(int argc, char * argv[])
               "car", "carrot", "cat", "cell phone", "chair", "clock", "couch",
               "cow", "cup", "dining table", "dog", "donut", "elephant",
               "fire hydrant", "fork", "frisbee", "giraffe", "hair drier",
-              "handbag", "horse", "hot dog", "keyboard", "kite", "knife",
+              "handbag", "horse", "hotdog", "keyboard", "kite", "knife",
               "laptop", "microwave", "motorcycle", "mouse", "orange",
               "oven", "parking meter", "person", "pizza", "potted plant",
               "refrigerator", "remote", "sandwich", "scissors", "sheep",
