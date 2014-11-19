@@ -54,7 +54,7 @@ static inline Result content(const xmlNodePtr cur)
 	
 	istringstream iss(reinterpret_cast<const char *>(cur->xmlChildrenNode->content));
 	Result result;
-	iss >> noskipws >> result;
+	iss >> result;
 	return result;
 }
 
