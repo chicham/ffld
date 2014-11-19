@@ -970,7 +970,6 @@ vector<pair<int, int> > Mixture::FilterSizes(int nbComponents, const vector<Scen
 	vector<double> ratios;
 	
 	for (int i = 0; i < scenes.size(); ++i) {
-		std::cout << "New image" << std::endl;
 		for (int j = 0; j < scenes[i].objects().size(); ++j) {
 			const Object & obj = scenes[i].objects()[j];
 			
