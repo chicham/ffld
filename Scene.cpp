@@ -150,7 +150,7 @@ Scene::Scene(const string & filename)
 					const string * iter =
 						find(Names, Names + 80, content<string>(cur2));
 					
-					std::cout << "XML NAME: " << iter << std::endl;
+					std::cout << "XML NAME: " << content<string>(cur2) << std::endl;
 					if (iter != Names + 80)
 						objects_.back().setName(static_cast<Object::Name>(iter - Names));
 				}
