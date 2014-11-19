@@ -157,7 +157,6 @@ Scene::Scene(const string & filename)
 			
 			while (cur2 != NULL) {
 				if (!xmlStrcmp(cur2->name, reinterpret_cast<const xmlChar *>("name"))) {
-					std::cout << "XML Name " << content<string>(cur2) << std::endl;
 					const string * iter =
 						find(Names, Names + 80, content<string>(cur2));
 					
