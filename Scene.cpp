@@ -52,10 +52,12 @@ static inline Result content(const xmlNodePtr cur)
 	if ((cur == NULL) || (cur->xmlChildrenNode == NULL))
 		return Result();
 	
-	istringstream iss(reinterpret_cast<const char *>(cur->xmlChildrenNode->content));
-	std::cout << "Content str " << iss.str() << std::endl;
+	istringstream iss(reinterpret_cast<const string&>(cur->xmlChildrenNode->content));
 	Result result;
-	istringstream(iss.str()) >> skipws >> result;
+	iss >> result;
+	// istringstream iss(reinterpret_cast<const char *>(cur->xmlChildrenNode->content));
+	// Result result;
+	// iss >> result;
 	return result;
 }
 
