@@ -54,7 +54,8 @@ static inline Result content(const xmlNodePtr cur)
 	
 	istringstream iss(reinterpret_cast<const char *>(cur->xmlChildrenNode->content));
 	Result result;
-	iss >> result;
+	// iss >> result;
+	result = iss.str()
 	return result;
 }
 
@@ -149,8 +150,8 @@ Scene::Scene(const string & filename)
 				if (!xmlStrcmp(cur2->name, reinterpret_cast<const xmlChar *>("name"))) {
 					const string * iter =
 						find(Names, Names + 80, content<string>(cur2));
-					
 					std::cout << "XML NAME: " << content<string>(cur2) << std::endl;
+					
 					if (iter != Names + 80)
 						objects_.back().setName(static_cast<Object::Name>(iter - Names));
 				}
