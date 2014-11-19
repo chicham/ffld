@@ -24,7 +24,6 @@
 #include <algorithm>
 #include <iostream>
 #include <sstream>
-
 #include <libxml/parser.h>
 
 using namespace FFLD;
@@ -54,14 +53,20 @@ static inline Result content(const xmlNodePtr cur)
 	
 	istringstream iss(reinterpret_cast<const char *>(cur->xmlChildrenNode->content));
 	Result result;
-	if (iss.str().find(' ')){
-	    iss >> result;
-	    iss >> result;
-	}
-	else
-	    iss >> result;
+
+	iss >> result;
 	return result;
 }
+
+template<>string content<string>(const xmlNodePtr cur)
+{
+	if ((cur == NULL) || (cur->xmlChildrenNode == NULL))
+		return string();
+	
+	istringstream iss(reinterpret_cast<const char *>(cur->xmlChildrenNode->content));
+	return  iss.str();
+}
+
 
 Scene::Scene(const string & filename)
 {
