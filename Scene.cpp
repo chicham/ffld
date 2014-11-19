@@ -53,9 +53,9 @@ static inline Result content(const xmlNodePtr cur)
 		return Result();
 	
 	istringstream iss(reinterpret_cast<const char *>(cur->xmlChildrenNode->content));
-	istringstream iiss(iss.str());
+	std::cout << "Content str " << iss.str() << std::endl;
 	Result result;
-	iiss >> result;
+	iss >> noskipws >> result;
 	return result;
 }
 
