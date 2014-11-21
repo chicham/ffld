@@ -1006,6 +1006,8 @@ vector<pair<int, int> > Mixture::FilterSizes(int nbComponents, const vector<Scen
 			
 			if ((obj.name() == name) && !obj.difficult()) {
 				const double r = static_cast<double>(obj.bndbox().width()) / obj.bndbox().height();
+				std::cout << "Width " << obj.bndbox().width()  << std::endl;
+				std::cout << "Height " << obj.bndbox().height()  << std::endl;
 				std::cout << "Ratio"<< " " << r << std::endl;
 				
 				int k = 0;
