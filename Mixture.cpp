@@ -45,6 +45,7 @@ cached_(false), zero_(true)
 {
 	// Create an empty mixture if any of the given parameters is invalid
 
+	std::cout << "Size scenes" << scenes.size() << std::endl;
 	if ((nbComponents <= 0) || scenes.empty()) {
 		cerr << "Attempting to create an empty mixture" << endl;
 		return;
