@@ -39,6 +39,7 @@ Model::Model() : parts_(1), bias_(0.0)
 
 Model::Model(pair<int, int> rootSize, int nbParts, pair<int, int> partSize) : parts_(1), bias_(0.0)
 {
+	std::cout << "Constructs model" << std::endl;
 	parts_[0].offset.setZero();
 	parts_[0].deformation.setZero();
 	
