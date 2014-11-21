@@ -44,9 +44,6 @@ Mixture::Mixture(int nbComponents, const vector<Scene> & scenes, Object::Name na
 cached_(false), zero_(true)
 {
 	// Create an empty mixture if any of the given parameters is invalid
-	std::cout << "Mixture:mixture nbcomponents " << nbComponents << std::endl;
-	std::cout << "Mixture:mixture size scene " << scenes.size() << std::endl;
-	std::cout << "Mixture:mixture name " << name << std::endl;
 
 	if ((nbComponents <= 0) || scenes.empty()) {
 		cerr << "Attempting to create an empty mixture" << endl;

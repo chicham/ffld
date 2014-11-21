@@ -353,6 +353,7 @@ int main(int argc, char * argv[])
 	std::cout << "train:nbComponents" << nbComponents << std::endl;
 	Mixture mixture(nbComponents, scenes, name);
 
+	std::cout << "toto" << std::endl;
 	if (mixture.empty()) {
 		cerr << "Error initializing the mixture model" << endl;
 		return -1;
@@ -360,7 +361,6 @@ int main(int argc, char * argv[])
 
 	
 	// Try to open the mixture
-	std::cout << "Model not empty" << std::endl;
 	if (!model.empty()) {
 		ifstream in(model.c_str(), ios::binary);
 		
