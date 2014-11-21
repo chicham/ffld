@@ -1009,7 +1009,6 @@ vector<pair<int, int> > Mixture::FilterSizes(int nbComponents, const vector<Scen
 				double height = obj.bndbox().height();
 				if (width > 0 && height > 0){
 					const double r = static_cast<double>(width / height);
-					std::cout << "Ratio"<< " " << r << std::endl;
 					
 					int k = 0;
 					
@@ -1038,6 +1037,12 @@ vector<pair<int, int> > Mixture::FilterSizes(int nbComponents, const vector<Scen
 		else {
 			sizes[i] = sizes[i + 1];
 		}
+	}
+
+	cout << endl << "Sizes " ;
+	for (int i = 0; int i < sizes.size(); ++int i)
+	{
+		cout << sizes.at(i) << " ";
 	}
 	
 	return sizes;
