@@ -1029,8 +1029,7 @@ vector<pair<int, int> > Mixture::FilterSizes(int nbComponents, const vector<Scen
 			sort(areas[i].begin(), areas[i].end());
 			
 			const int area = min(max(areas[i][(areas[i].size() * 2) / 10], 3000), 5000);
-			std::cout << "Size" << ratios.size() << std::endl;
-			cout << "nbComponents" << nbComponents << endl;
+			std::cout << "i " << i << std::endl;
 			const double ratio = ratios[(ratios.size() * (i * 2 + 1)) / (nbComponents * 2)];
 			std::cout << "Ratio" <<ratio << std::endl;
 			
