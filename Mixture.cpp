@@ -56,15 +56,11 @@ cached_(false), zero_(true)
 	// Early return in case the root filters' sizes could not be determined
 	
 
-	std::cout << "Size " << sizes.size() << std::endl;
-	std::cout << "Nb components" << nbComponents << std::endl;
 	if (sizes.size() != nbComponents)
 		return;
 	
 	// Initialize the models (with symmetry) to those sizes
 	models_.resize(2 * nbComponents);
-
-	std::cout << "Models size " << models_.size() << std::endl;
 
 
 	for (int i = 0; i < nbComponents; ++i) {
@@ -985,12 +981,6 @@ vector<pair<int, int> > Mixture::FilterSizes(int nbComponents, const vector<Scen
 		}
 	}
 
-	std::cout << "Ratios: ";
-	for (int i = 0; i < ratios.size(); ++i)
-	{
-		std::cout << ratios.at(i) ;
-	}
-	std::cout << std::endl;
 
 
 	
@@ -1016,6 +1006,7 @@ vector<pair<int, int> > Mixture::FilterSizes(int nbComponents, const vector<Scen
 			
 			if ((obj.name() == name) && !obj.difficult()) {
 				const double r = static_cast<double>(obj.bndbox().width()) / obj.bndbox().height();
+				std::cout << "Ratio"<< " " << r << std::endl;
 				
 				int k = 0;
 				
