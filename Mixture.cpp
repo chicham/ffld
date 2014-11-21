@@ -45,7 +45,6 @@ cached_(false), zero_(true)
 {
 	// Create an empty mixture if any of the given parameters is invalid
 
-	std::cout << "Size scenes" << scenes.size() << std::endl;
 	if ((nbComponents <= 0) || scenes.empty()) {
 		cerr << "Attempting to create an empty mixture" << endl;
 		return;
@@ -53,17 +52,20 @@ cached_(false), zero_(true)
 	
 	// Compute the root filters' sizes using Felzenszwalb's heuristic
 	const vector<pair<int, int> > sizes = FilterSizes(nbComponents, scenes, name);
-	std::cout <<  "Size " << sizes.size() << std::endl;
 	
 	// Early return in case the root filters' sizes could not be determined
 	
 
+	std::cout << "Size " << sizes.size() << std::endl;
+	std::cout << "Nb components" << nbComponents << std::endl;
 	if (sizes.size() != nbComponents)
 		return;
 	
 	// Initialize the models (with symmetry) to those sizes
 	models_.resize(2 * nbComponents);
-	std::cout << "Resize" << std::endl;
+
+	std::cout << "Models size " << models_.size() << std::endl;
+
 
 	for (int i = 0; i < nbComponents; ++i) {
 		models_[2 * i    ] = Model(sizes[i]);

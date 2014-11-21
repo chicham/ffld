@@ -43,8 +43,6 @@ Model::Model(pair<int, int> rootSize, int nbParts, pair<int, int> partSize) : pa
 	parts_[0].deformation.setZero();
 	
 	// Create an empty model if any of the given parameters is invalid
-	std::cout << "Root first " << rootSize.first << std::endl;
-	std::cout << "Root Second " << rootSize.second << std::endl;
 	if ((rootSize.first <= 0) || (rootSize.second <= 0) || (nbParts < 0) ||
 		(nbParts && ((partSize.first <= 0) || (partSize.second <= 0)))) {
 		cerr << "Attempting to create an empty model" << endl;
