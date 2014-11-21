@@ -984,6 +984,15 @@ vector<pair<int, int> > Mixture::FilterSizes(int nbComponents, const vector<Scen
 			}
 		}
 	}
+
+	std::cout << "Ratios: ";
+	for (int i = 0; i < ratios.size(); ++i)
+	{
+		std::cout << ratios.at(i) ;
+	}
+	std::cout << std::endl;
+
+
 	
 	// Early return if there is no object
 	if (ratios.empty())
