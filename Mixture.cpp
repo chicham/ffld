@@ -1032,20 +1032,15 @@ vector<pair<int, int> > Mixture::FilterSizes(int nbComponents, const vector<Scen
 			const double ratio = ratios[(ratios.size() * (i * 2 + 1)) / (nbComponents * 2)];
 			
 			sizes[i].first = sqrt(area / ratio) / 8.0 + 0.5;
+			std::cout << "Size " << i << " first :" << sizes[i].first << std::endl;
 			sizes[i].second = sqrt(area * ratio) / 8.0 + 0.5;
+			std::cout << "Size " << i << " second :" << sizes[i].second << std::endl;
 		}
 		else {
 			sizes[i] = sizes[i + 1];
 		}
 	}
 
-	cout << "Sizes " ;
-	for (int i = 0; i < sizes.size(); ++i)
-	{
-		cout << sizes.at(i) << " ";
-	}
-	cout << endl;
-	
 	return sizes;
 }
 
