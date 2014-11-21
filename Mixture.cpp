@@ -976,7 +976,11 @@ vector<pair<int, int> > Mixture::FilterSizes(int nbComponents, const vector<Scen
 			const Object & obj = scenes[i].objects()[j];
 			
 			if ((obj.name() == name) && !obj.difficult()){
-				ratios.push_back(static_cast<double>(obj.bndbox().width()) / obj.bndbox().height());
+				double width = obj.bndbox().width();
+				double height = obj.bndbox().height();
+
+				if (width > 0 && height > 0)
+					ratios.push_back(static_cast<double>(width/ height));
 			}
 		}
 	}
@@ -1029,11 +1033,7 @@ vector<pair<int, int> > Mixture::FilterSizes(int nbComponents, const vector<Scen
 			sort(areas[i].begin(), areas[i].end());
 			
 			const int area = min(max(areas[i][(areas[i].size() * 2) / 10], 3000), 5000);
-			std::cout << "i " << i << std::endl;
-			std::cout << ratios.size() * (i*2+1) << std::endl;
-			cout << ratios.size() / nbComponents << endl;
 			const double ratio = ratios[(ratios.size() * (i * 2 + 1)) / (nbComponents * 2)];
-			std::cout << "Ratio" <<ratio << std::endl;
 			
 			sizes[i].first = sqrt(area / ratio) / 8.0 + 0.5;
 			sizes[i].second = sqrt(area * ratio) / 8.0 + 0.5;
