@@ -53,7 +53,7 @@ cached_(false), zero_(true)
 	
 	// Compute the root filters' sizes using Felzenszwalb's heuristic
 	const vector<pair<int, int> > sizes = FilterSizes(nbComponents, scenes, name);
-	std::cout <<  "titi" << std::endl;
+	std::cout <<  "Size " << sizes.size() << std::endl;
 	
 	// Early return in case the root filters' sizes could not be determined
 	
