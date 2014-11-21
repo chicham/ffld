@@ -1039,11 +1039,12 @@ vector<pair<int, int> > Mixture::FilterSizes(int nbComponents, const vector<Scen
 		}
 	}
 
-	cout << endl << "Sizes " ;
+	cout << "Sizes " ;
 	for (int i = 0; i < sizes.size(); ++i)
 	{
 		cout << sizes.at(i) << " ";
 	}
+	cout << endl;
 	
 	return sizes;
 }
