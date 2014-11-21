@@ -350,11 +350,8 @@ int main(int argc, char * argv[])
 	}
 	
 	// The mixture to train
-	std::cout << "train:nbComponents " << nbComponents << std::endl;
-	std::cout << "toto" << std::endl;
 	Mixture mixture(nbComponents, scenes, name);
 
-	std::cout << "toto" << std::endl;
 	if (mixture.empty()) {
 		cerr << "Error initializing the mixture model" << endl;
 		return -1;
