@@ -29,7 +29,7 @@ int main(int argc, char *argv[])
 
 		JPEGImage img(scene.filename());
 
-		if(scene.height() != img.height() || scene.width()!=img.height()){
+		if(scene.height() != img.height() || scene.width()!=img.height()) {
 			std::cout << scene.height() << "," << scene.width() << std::endl;
 			std::cout << img.height() << "," << img.width() << std::endl;
 		}
