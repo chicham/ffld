@@ -23,7 +23,6 @@ int main(int argc, char *argv[])
 		string line;
 		getline(in, line);
 		const string name = line.substr(0, line.find(' '));
-		std::cout << name << std::endl;
 
 		Scene scene(folder + name + ".xml");
 
@@ -33,11 +32,10 @@ int main(int argc, char *argv[])
 		int i_width = (int) img.width();
 		int i_height = (int) img.height();
 
-		if(s_height != i_height || s_width != i_width) {
-			std::cout << s_height << "," << s_width << std::endl;
+		if(i_height == 0 || i_width == 0) {
+			std::cout << name << std::endl;
 			std::cout << i_height << "," << i_width << std::endl;
 		}
-		std::cout << "--" << std::endl;
 	}
 	return 0;
 }
