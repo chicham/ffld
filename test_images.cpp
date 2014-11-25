@@ -23,19 +23,18 @@ int main(int argc, char *argv[])
 		string line;
 		getline(in, line);
 		std::cout << line << std::endl;
+		const string name = line.substr(0, line.find(' '));
 
-		Scene scene(folder + line.substr(0, line.find(' ')) + ".xml");
-		std::cout << "Name: " << scene.filename() << std::endl;
-		std::cout << "XML Width: " << scene.width() << std::endl;
-		std::cout << "XML Height: " << scene.height() << std::endl;
+		Scene scene(folder + name + ".xml");
 
 		JPEGImage img(scene.filename());
-		std::cout << "IMG Width: " << img.width() << std::endl;
-		std::cout << "IMG Height: " << img.height() << std::endl;
-		std::cout << "IMG Depth: " << img.depth() << std::endl;
 
-
+		if(scene.height() != img.height() || scene.width()!=img.height() ||
+			img.height()==0 || img.width()==0){
+			std::cout << name << std::endl;
+			std::cout << scene.height() << "," << scene.width() << std::endl;
+			std::cout << img.height() << "," << img.width() << std::endl;
+		}
 	}
-
 	return 0;
 }
