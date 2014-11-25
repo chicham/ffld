@@ -297,6 +297,8 @@ int main(int argc, char * argv[])
 	// Load all the scenes
 	int maxRows = 0;
 	int maxCols = 0;
+	int nbPositives = 0;
+	int nbNegatives = 0;
 	
 	vector<Scene> scenes;
 	
@@ -321,9 +323,13 @@ int main(int argc, char * argv[])
 			if (scene.objects()[i].name() == name) {
 				negative = false;
 				
-				if (!scene.objects()[i].difficult())
+				if (!scene.objects()[i].difficult()){
 					positive = true;
+					nbPositives++;
+				}
 			}
+			else
+				nbNegatives++;
 		}
 		
 		if (positive || (negative && nbNegativeScenes)) {
@@ -377,14 +383,17 @@ int main(int argc, char * argv[])
 		}
 	}
 	
+	std::cout << "Nb negatives" << nbNegatives << std::endl;
 	if (model.empty())
-		mixture.train(scenes, name, padding, padding, interval, nbRelabel / 2, nbDatamine, 24000, C,
+		mixture.train(scenes, name, padding, padding, interval, nbRelabel / 2, nbDatamine, nbNegatives, C,
 					  J, overlap);
+		// mixture.train(scenes, name, padding, padding, interval, nbRelabel / 2, nbDatamine, 24000, C,
+		// 			  J, overlap);
 	
 	if (mixture.models()[0].parts().size() == 1)
 		mixture.initializeParts(8, make_pair(6, 6));
 	
-	mixture.train(scenes, name, padding, padding, interval, nbRelabel, nbDatamine, 24000, C, J,
+	mixture.train(scenes, name, padding, padding, interval, nbRelabel, nbDatamine, nbNegatives, C, J,
 				  overlap);
 	
 	// Try to open the result file
