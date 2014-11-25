@@ -37,6 +37,7 @@ int main(int argc, char *argv[])
 			std::cout << s_height << "," << s_width << std::endl;
 			std::cout << i_height << "," << i_width << std::endl;
 		}
+		std::cout << "--" << std::endl;
 	}
 	return 0;
 }
