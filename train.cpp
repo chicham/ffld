@@ -383,9 +383,8 @@ int main(int argc, char * argv[])
 		}
 	}
 	
-	std::cout << "Nb negatives" << nbNegatives << std::endl;
 	if (model.empty())
-		mixture.train(scenes, name, padding, padding, interval, nbRelabel / 2, nbDatamine, nbNegatives, C,
+		mixture.train(scenes, name, padding, padding, interval, nbRelabel / 2, nbDatamine, 5*nbPositives, C,
 					  J, overlap);
 		// mixture.train(scenes, name, padding, padding, interval, nbRelabel / 2, nbDatamine, 24000, C,
 		// 			  J, overlap);
@@ -393,7 +392,7 @@ int main(int argc, char * argv[])
 	if (mixture.models()[0].parts().size() == 1)
 		mixture.initializeParts(8, make_pair(6, 6));
 	
-	mixture.train(scenes, name, padding, padding, interval, nbRelabel, nbDatamine, nbNegatives, C, J,
+	mixture.train(scenes, name, padding, padding, interval, nbRelabel, nbDatamine, 5*nbPositives, C, J,
 				  overlap);
 	
 	// Try to open the result file
