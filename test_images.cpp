@@ -28,10 +28,14 @@ int main(int argc, char *argv[])
 		Scene scene(folder + name + ".xml");
 
 		JPEGImage img(scene.filename());
+		int s_height = (int) scene.height();
+		int s_width = (int) scene.width();
+		int i_width = (int) img.width();
+		int i_height = (int) img.height();
 
-		if(scene.height() != img.height() || scene.width()!=img.height()) {
-			std::cout << scene.height() << "," << scene.width() << std::endl;
-			std::cout << img.height() << "," << img.width() << std::endl;
+		if(s_height != i_height || s_width != i_width) {
+			std::cout << s_height << "," << s_width << std::endl;
+			std::cout << i_height << "," << i_width << std::endl;
 		}
 	}
 	return 0;
