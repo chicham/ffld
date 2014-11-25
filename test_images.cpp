@@ -22,7 +22,6 @@ int main(int argc, char *argv[])
 	while(in){
 		string line;
 		getline(in, line);
-		std::cout << line << std::endl;
 		const string name = line.substr(0, line.find(' '));
 		std::cout << name << std::endl;
 
@@ -30,8 +29,7 @@ int main(int argc, char *argv[])
 
 		JPEGImage img(scene.filename());
 
-		if(scene.height() != img.height() || scene.width()!=img.height() ||
-			img.height()==0 || img.width()==0){
+		if(scene.height() != img.height() || scene.width()!=img.height()){
 			std::cout << scene.height() << "," << scene.width() << std::endl;
 			std::cout << img.height() << "," << img.width() << std::endl;
 		}
