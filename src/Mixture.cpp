@@ -210,6 +210,8 @@ double Mixture::train(const vector<Scene> & scenes, Object::Name name, int padx,
 				 << ", # positives: " << positives.size() << ", # hard negatives: " << j
 				 << " (already in the cache) + " << (negatives.size() - j) << " (new) = "
 				 << negatives.size() << ", loss (cache): " << loss << endl;
+			if (positive.size() == 0)
+				BOOST_LOG_TRIVIAL(warning) << "Number of latent positif is 0";
 			
 			// Unmerge the left / right samples
 			for (int i = 0; i < positives.size(); ++i) {
@@ -408,6 +410,7 @@ void Mixture::posLatentSearch(const vector<Scene> & scenes, Object::Name name, i
 		
 		if (pyramid.empty()) {
 			BOOST_LOG_TRIVIAL(warning) << "Latent positive: pyramid empty";
+			BOOST_LOG_TRIVIAL(info) << scenes[i].filename() << ":" << image.height() << "," << image.width();
 			positives.clear();
 			return;
 		}
