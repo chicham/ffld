@@ -265,6 +265,9 @@ int main(int argc, char * argv[])
 	
 	srand(seed);
 	srand48(seed);
+
+	logging::add_file_log(result + "_train.log");
+	// std::cout << result + "_train.log" << std::endl;
 	
 	if (!args.FileCount()) {
 		showUsage();
@@ -279,6 +282,7 @@ int main(int argc, char * argv[])
 	
 	// Open the image set file
 	const string file(args.File(0));
+	BOOST_LOG_TRIVIAL(info) << "Set file " << file << endl;
 	const size_t lastDot = file.find_last_of('.');
 	
 	if ((lastDot == string::npos) || (file.substr(lastDot) != ".txt")) {
