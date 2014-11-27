@@ -19,16 +19,20 @@
 // not, see <http://www.gnu.org/licenses/>.
 //--------------------------------------------------------------------------------------------------
 
-#include <SimpleOpt.h>
+#include "SimpleOpt.h"
 
 #include "Mixture.h"
 
 #include <algorithm>
 #include <fstream>
 #include <iostream>
+#include <boost/log/trivial.hpp>
+#include <boost/log/utility/setup/file.hpp>
 
 using namespace FFLD;
 using namespace std;
+
+namespace logging = boost::log;
 
 // SimpleOpt array of valid options
 enum
