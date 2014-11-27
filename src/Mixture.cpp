@@ -27,6 +27,7 @@
 #include <cmath>
 #include <fstream>
 #include <iostream>
+#include <boost/log/trivial.hpp>
 
 using namespace Eigen;
 using namespace FFLD;
@@ -46,7 +47,7 @@ cached_(false), zero_(true)
 	// Create an empty mixture if any of the given parameters is invalid
 
 	if ((nbComponents <= 0) || scenes.empty()) {
-		cerr << "Attempting to create an empty mixture" << endl;
+		BOOST_LOG_TRIVIAL(error) << "Attempting to create an empty mixture";
 		return;
 	}
 	
@@ -56,8 +57,10 @@ cached_(false), zero_(true)
 	// Early return in case the root filters' sizes could not be determined
 	
 
-	if (sizes.size() != nbComponents)
+	if (sizes.size() != nbComponents){
+		BOOST_LOG_TRIVIAL(error) << "Length of sizes " << sizes.size() << " != number of components " << nbComponents;
 		return;
+	}
 	
 	// Initialize the models (with symmetry) to those sizes
 	models_.resize(2 * nbComponents);
@@ -123,7 +126,7 @@ double Mixture::train(const vector<Scene> & scenes, Object::Name name, int padx,
 	if (empty() || scenes.empty() || (padx < 1) || (pady < 1) || (interval < 1) ||
 		(nbRelabel < 1) || (nbDatamine < 1) || (maxNegatives < models_.size()) || (C <= 0.0) ||
 		(J <= 0.0) || (overlap <= 0.0) || (overlap >= 1.0)) {
-		cerr << "Invalid training parameters" << endl;
+		BOOST_LOG_TRIVIAL(error) << "Invalid training parameters";
 		return numeric_limits<double>::quiet_NaN();
 	}
 	
@@ -376,7 +379,7 @@ void Mixture::posLatentSearch(const vector<Scene> & scenes, Object::Name name, i
 	if (scenes.empty() || (padx < 1) || (pady < 1) || (interval < 1) || (overlap <= 0.0) ||
 		(overlap >= 1.0)) {
 		positives.clear();
-		cerr << "Invalid training paramters" << endl;
+		BOOST_LOG_TRIVIAL(error) << "Invalid training parameters";
 		return;
 	}
 	
@@ -396,6 +399,7 @@ void Mixture::posLatentSearch(const vector<Scene> & scenes, Object::Name name, i
 		const JPEGImage image(scenes[i].filename());
 		
 		if (image.empty()) {
+			BOOST_LOG_TRIVIAL(warning) << "Latent positive: image empty";
 			positives.clear();
 			return;
 		}
@@ -403,6 +407,7 @@ void Mixture::posLatentSearch(const vector<Scene> & scenes, Object::Name name, i
 		const HOGPyramid pyramid(image, padx, pady, interval);
 		
 		if (pyramid.empty()) {
+			BOOST_LOG_TRIVIAL(warning) << "Latent positive: pyramid empty";
 			positives.clear();
 			return;
 		}
@@ -541,7 +546,7 @@ void Mixture::negLatentSearch(const vector<Scene> & scenes, Object::Name name, i
 	if (scenes.empty() || (padx < 1) || (pady < 1) || (interval < 1) || (maxNegatives <= 0) ||
 		(negatives.size() >= maxNegatives)) {
 		negatives.clear();
-		cerr << "Invalid training paramters" << endl;
+		BOOST_LOG_TRIVIAL(error) << "Invalid training paramters";
 		return;
 	}
 	

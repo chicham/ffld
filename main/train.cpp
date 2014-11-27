@@ -28,13 +28,16 @@
 #include <iostream>
 #include <boost/log/trivial.hpp>
 #include <boost/log/utility/setup/file.hpp>
+#include <boost/log/utility/setup/console.hpp>
 #include <boost/filesystem.hpp>
+#include <boost/date_time/posix_time/posix_time.hpp>
 
 using namespace FFLD;
 using namespace std;
 using namespace boost::filesystem;
 
 namespace logging = boost::log;
+namespace timing = boost::posix_time;
 
 // SimpleOpt array of valid options
 enum
@@ -121,15 +124,16 @@ int main(int argc, char * argv[])
 	// Parse the parameters
 	CSimpleOpt args(argc, argv, SOptions);
 
-	path train_log(result);
-	logging::add_file_log( train_log.stem().string() + "_train.log" );
+	logging::add_console_log();
+	path train_log;
 	
 	while (args.Next()) {
 		if (args.LastError() == SO_SUCCESS) {
 			if (args.OptionId() == OPT_RESULT) {
 				result = args.OptionArg();
 				train_log = path(result);
-				logging::add_file_log( train_log.stem().string() + "_train.log" );
+				timing::ptime now(timing::second_clock::universal_time());
+				logging::add_file_log( train_log.stem().string() + "_train" + to_iso_extended_string(now) + ".log" );
 			}
 			else if (args.OptionId() == OPT_C) {
 				C = atof(args.OptionArg());
@@ -348,8 +352,6 @@ int main(int argc, char * argv[])
 				nbNegatives++;
 		}
 
-		BOOST_LOG_TRIVIAL(info) << nbPositives << " positive samples";
-		BOOST_LOG_TRIVIAL(info) << nbNegatives << " negative samples";
 		
 		if (positive || (negative && nbNegativeScenes)) {
 			scenes.push_back(scene);
@@ -361,6 +363,9 @@ int main(int argc, char * argv[])
 				--nbNegativeScenes;
 		}
 	}
+
+	BOOST_LOG_TRIVIAL(info) << nbPositives << " positive samples";
+	BOOST_LOG_TRIVIAL(info) << nbNegatives << " negative samples";
 	
 	if (scenes.empty()) {
 		showUsage();

@@ -29,6 +29,15 @@
 #include <fstream>
 #include <iomanip>
 #include <iostream>
+#include <boost/log/trivial.hpp>
+#include <boost/log/utility/setup/file.hpp>
+#include <boost/log/utility/setup/console.hpp>
+#include <boost/filesystem.hpp>
+#include <boost/date_time/posix_time/posix_time.hpp>
+
+using namespace boost::filesystem;
+namespace logging = boost::log;
+namespace timing = boost::posix_time;
 
 #ifndef _WIN32
 #include <sys/time.h>
@@ -393,6 +402,8 @@ int main(int argc, char ** argv)
 	
 	// Parse the parameters
 	CSimpleOpt args(argc, argv, SOptions);
+	logging::add_console_log();
+	path train_log;
 	
 	while (args.Next()) {
 		if (args.LastError() == SO_SUCCESS) {
@@ -466,6 +477,10 @@ int main(int argc, char ** argv)
 			}
 			else if (args.OptionId() == OPT_RESULT) {
 				result = args.OptionArg();
+				train_log = path(result);
+				timing::ptime now(timing::second_clock::universal_time());
+				logging::add_file_log( train_log.stem().string() + "_test" + to_iso_extended_string(now) + ".log" );
+
 			}
 			else if (args.OptionId() == OPT_THRESHOLD) {
 				threshold = atof(args.OptionArg());
