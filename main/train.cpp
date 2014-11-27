@@ -28,9 +28,11 @@
 #include <iostream>
 #include <boost/log/trivial.hpp>
 #include <boost/log/utility/setup/file.hpp>
+#include <boost/filesystem.hpp>
 
 using namespace FFLD;
 using namespace std;
+using namespace boost::filesystem;
 
 namespace logging = boost::log;
 
@@ -118,15 +120,23 @@ int main(int argc, char * argv[])
 	
 	// Parse the parameters
 	CSimpleOpt args(argc, argv, SOptions);
+
+	path train_log(result);
+	logging::add_file_log( train_log.stem().string() + "_train.log" );
 	
 	while (args.Next()) {
 		if (args.LastError() == SO_SUCCESS) {
-			if (args.OptionId() == OPT_C) {
+			if (args.OptionId() == OPT_RESULT) {
+				result = args.OptionArg();
+				train_log = path(result);
+				logging::add_file_log( train_log.stem().string() + "_train.log" );
+			}
+			else if (args.OptionId() == OPT_C) {
 				C = atof(args.OptionArg());
 				
 				if (C <= 0) {
 					showUsage();
-					cerr << "\nInvalid C arg " << args.OptionArg() << endl;
+					BOOST_LOG_TRIVIAL(fatal)<< "Invalid C arg " << args.OptionArg();
 					return -1;
 				}
 			}
@@ -135,7 +145,7 @@ int main(int argc, char * argv[])
 				
 				if (nbDatamine <= 0) {
 					showUsage();
-					cerr << "\nInvalid datamine arg " << args.OptionArg() << endl;
+					BOOST_LOG_TRIVIAL(fatal) << "Invalid datamine arg " << args.OptionArg();
 					return -1;
 				}
 			}
@@ -144,7 +154,7 @@ int main(int argc, char * argv[])
 				
 				if (interval <= 0) {
 					showUsage();
-					cerr << "\nInvalid interval arg " << args.OptionArg() << endl;
+					BOOST_LOG_TRIVIAL(fatal) << "Invalid interval arg " << args.OptionArg();
 					return -1;
 				}
 			}
@@ -157,7 +167,7 @@ int main(int argc, char * argv[])
 				
 				if (J <= 0) {
 					showUsage();
-					cerr << "\nInvalid J arg " << args.OptionArg() << endl;
+					BOOST_LOG_TRIVIAL(fatal) << "Invalid J arg " << args.OptionArg();
 					return -1;
 				}
 			}
@@ -166,7 +176,7 @@ int main(int argc, char * argv[])
 				
 				if (nbRelabel <= 0) {
 					showUsage();
-					cerr << "\nInvalid relabel arg " << args.OptionArg() << endl;
+					BOOST_LOG_TRIVIAL(fatal) << "Invalid relabel arg " << args.OptionArg();
 					return -1;
 				}
 			}
@@ -207,7 +217,7 @@ int main(int argc, char * argv[])
 				
 				if (iter == Names + 80) {
 					showUsage();
-					cerr << "\nInvalid name arg " << args.OptionArg() << endl;
+					BOOST_LOG_TRIVIAL(fatal) << "Invalid name arg " << args.OptionArg();
 					return -1;
 				}
 				
@@ -218,13 +228,11 @@ int main(int argc, char * argv[])
 				
 				if (padding <= 1) {
 					showUsage();
-					cerr << "\nInvalid padding arg " << args.OptionArg() << endl;
+					BOOST_LOG_TRIVIAL(fatal) << "Invalid padding arg " << args.OptionArg();
 					return -1;
 				}
 			}
-			else if (args.OptionId() == OPT_RESULT) {
-				result = args.OptionArg();
-			}
+			
 			else if (args.OptionId() == OPT_SEED) {
 				seed = atoi(args.OptionArg());
 			}
@@ -233,7 +241,7 @@ int main(int argc, char * argv[])
 				
 				if ((overlap <= 0.0) || (overlap >= 1.0)) {
 					showUsage();
-					cerr << "\nInvalid overlap arg " << args.OptionArg() << endl;
+					BOOST_LOG_TRIVIAL(fatal) << "Invalid overlap arg " << args.OptionArg();
 					return -1;
 				}
 			}
@@ -242,7 +250,7 @@ int main(int argc, char * argv[])
 				
 				if (nbComponents <= 0) {
 					showUsage();
-					cerr << "\nInvalid nb-components arg " << args.OptionArg() << endl;
+					BOOST_LOG_TRIVIAL(fatal) << "Invalid nb-components arg " << args.OptionArg();
 					return -1;
 				}
 			}
@@ -251,14 +259,14 @@ int main(int argc, char * argv[])
 				
 				if (nbNegativeScenes < 0) {
 					showUsage();
-					cerr << "\nInvalid nb-negatives arg " << args.OptionArg() << endl;
+					BOOST_LOG_TRIVIAL(fatal) << "Invalid nb-negatives arg " << args.OptionArg();
 					return -1;
 				}
 			}
 		}
 		else {
 			showUsage();
-			cerr << "\nUnknown option " << args.OptionText() << endl;
+			BOOST_LOG_TRIVIAL(fatal) << "Unknown option " << args.OptionText();
 			return -1;
 		}
 	}
@@ -266,28 +274,26 @@ int main(int argc, char * argv[])
 	srand(seed);
 	srand48(seed);
 
-	logging::add_file_log(result + "_train.log");
-	// std::cout << result + "_train.log" << std::endl;
 	
 	if (!args.FileCount()) {
 		showUsage();
-		cerr << "\nNo dataset provided" << endl;
+		BOOST_LOG_TRIVIAL(fatal) << "No dataset provided";
 		return -1;
 	}
 	else if (args.FileCount() > 1) {
 		showUsage();
-		cerr << "\nMore than one dataset provided" << endl;
+		BOOST_LOG_TRIVIAL(fatal) << "More than one dataset provided";
 		return -1;
 	}
 	
 	// Open the image set file
 	const string file(args.File(0));
-	BOOST_LOG_TRIVIAL(info) << "Set file " << file << endl;
+	BOOST_LOG_TRIVIAL(info) << "ImageSet: " << file;
 	const size_t lastDot = file.find_last_of('.');
 	
 	if ((lastDot == string::npos) || (file.substr(lastDot) != ".txt")) {
 		showUsage();
-		cerr << "\nInvalid image set file " << file << ", should be .txt" << endl;
+		cerr << "\nInvalid image set file " << file << ", should be .txt";
 		return -1;
 	}
 	
@@ -295,7 +301,7 @@ int main(int argc, char * argv[])
 	
 	if (!in.is_open()) {
 		showUsage();
-		cerr << "\nInvalid image set file " << file << endl;
+		cerr << "\nInvalid image set file " << file;
 		return -1;
 	}
 	
@@ -315,8 +321,10 @@ int main(int argc, char * argv[])
 		getline(in, line);
 		
 		// Skip empty lines
-		if (line.size() < 3)
+		if (line.size() < 3){
+			BOOST_LOG_TRIVIAL(warning) << "Empty line";
 			continue;
+		}
 		
 		// Check whether the scene is positive or negative
 		const Scene scene(folder + line.substr(0, line.find(' ')) + ".xml");
@@ -339,6 +347,9 @@ int main(int argc, char * argv[])
 			else
 				nbNegatives++;
 		}
+
+		BOOST_LOG_TRIVIAL(info) << nbPositives << " positive samples";
+		BOOST_LOG_TRIVIAL(info) << nbNegatives << " negative samples";
 		
 		if (positive || (negative && nbNegativeScenes)) {
 			scenes.push_back(scene);
@@ -353,13 +364,13 @@ int main(int argc, char * argv[])
 	
 	if (scenes.empty()) {
 		showUsage();
-		cerr << "\nInvalid image_set file " << file << endl;
+		BOOST_LOG_TRIVIAL(fatal) << "Invalid image_set file " << file;
 		return -1;
 	}
 	
 	// Initialize the Patchwork class
 	if (!Patchwork::InitFFTW((maxRows + 15) & ~15, (maxCols + 15) & ~15)) {
-		cerr << "Error initializing the FFTW library" << endl;
+		BOOST_LOG_TRIVIAL(fatal)<< "Error initializing the FFTW library";
 		return - 1;
 	}
 	
@@ -367,7 +378,7 @@ int main(int argc, char * argv[])
 	Mixture mixture(nbComponents, scenes, name);
 
 	if (mixture.empty()) {
-		cerr << "Error initializing the mixture model" << endl;
+		BOOST_LOG_TRIVIAL(fatal)<< "Error initializing the mixture model";
 		return -1;
 	}
 
@@ -378,7 +389,7 @@ int main(int argc, char * argv[])
 		
 		if (!in.is_open()) {
 			showUsage();
-			cerr << "\nInvalid model file " << model << endl;
+			BOOST_LOG_TRIVIAL(fatal)<< "Invalid model file " << model;
 			return -1;
 		}
 		
@@ -386,29 +397,28 @@ int main(int argc, char * argv[])
 		
 		if (mixture.empty()) {
 			showUsage();
-			cerr << "\nInvalid model file " << model << endl;
+			BOOST_LOG_TRIVIAL(fatal)<< "Invalid model file " << model;
 			return -1;
 		}
 	}
 	
+	BOOST_LOG_TRIVIAL(info) << "Number of negative samples for train " << 5*nbPositives;
 	if (model.empty())
-		mixture.train(scenes, name, padding, padding, interval, nbRelabel / 2, nbDatamine, 5*nbPositives, C,
-					  J, overlap);
+		mixture.train(scenes, name, padding, padding, interval, nbRelabel / 2, nbDatamine, 5*nbPositives, C, J, overlap);
 		// mixture.train(scenes, name, padding, padding, interval, nbRelabel / 2, nbDatamine, 24000, C,
 		// 			  J, overlap);
 	
 	if (mixture.models()[0].parts().size() == 1)
 		mixture.initializeParts(8, make_pair(6, 6));
 	
-	mixture.train(scenes, name, padding, padding, interval, nbRelabel, nbDatamine, 5*nbPositives, C, J,
-				  overlap);
+	mixture.train(scenes, name, padding, padding, interval, nbRelabel, nbDatamine, 5*nbPositives, C, J, overlap);
 	
 	// Try to open the result file
 	ofstream out(result.c_str(), ios::binary);
 	
 	if (!out.is_open()) {
 		showUsage();
-		cerr << "\nInvalid result file " << result << endl;
+		BOOST_LOG_TRIVIAL(fatal) << "Invalid result file " << result;
 		cout << mixture << endl; // Print the mixture as a last resort
 		return -1;
 	}
