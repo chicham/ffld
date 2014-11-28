@@ -210,7 +210,7 @@ double Mixture::train(const vector<Scene> & scenes, Object::Name name, int padx,
 				 << ", # positives: " << positives.size() << ", # hard negatives: " << j
 				 << " (already in the cache) + " << (negatives.size() - j) << " (new) = "
 				 << negatives.size() << ", loss (cache): " << loss << endl;
-			if (positive.size() == 0)
+			if (positives.size() == 0)
 				BOOST_LOG_TRIVIAL(warning) << "Number of latent positif is 0";
 			
 			// Unmerge the left / right samples
