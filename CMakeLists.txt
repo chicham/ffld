@@ -98,9 +98,9 @@ ENDIF()
 
 # Find Boost
 SET(Boost_USE_STATIC_LIBS OFF)
-set(Boost_USE_MULTITHREADED      ON)
-set(Boost_USE_STATIC_RUNTIME    OFF)
-find_package(Boost COMPONENTS log log_setup thread system filesystem REQUIRED)
+set(Boost_USE_MULTITHREADED ON)
+set(Boost_USE_STATIC_RUNTIME OFF)
+find_package(Boost 1.57.0 COMPONENTS log log_setup thread system filesystem REQUIRED)
 ADD_DEFINITIONS(-DBOOST_ALL_DYN_LINK)
 INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIRS})
 LINK_DIRECTORIES(${Boost_LIBRARIY_DIRS})
