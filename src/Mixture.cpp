@@ -28,10 +28,13 @@
 #include <fstream>
 #include <iostream>
 #include <boost/log/trivial.hpp>
+#include <boost/filesystem.hpp>
 
 using namespace Eigen;
 using namespace FFLD;
 using namespace std;
+using namespace boost::filesystem;
+
 
 Mixture::Mixture() : cached_(false), zero_(true)
 {
@@ -123,6 +126,9 @@ double Mixture::train(const vector<Scene> & scenes, Object::Name name, int padx,
 					  int interval, int nbRelabel, int nbDatamine, int maxNegatives, double C,
 					  double J, double overlap)
 {
+	path tmp_file(temp_directory_path());
+	tmp_file += unique_path();
+
 	if (empty() || scenes.empty() || (padx < 1) || (pady < 1) || (interval < 1) ||
 		(nbRelabel < 1) || (nbDatamine < 1) || (maxNegatives < models_.size()) || (C <= 0.0) ||
 		(J <= 0.0) || (overlap <= 0.0) || (overlap >= 1.0)) {
@@ -242,7 +248,9 @@ double Mixture::train(const vector<Scene> & scenes, Object::Name name, int padx,
 			zero_ = false;
 			
 			// Save the latest model so as to be able to look at it while training
-			ofstream out("tmp.txt");
+			//
+
+			ofstream out(tmp_file.c_str());
 			
 			out << (*this);
 			
