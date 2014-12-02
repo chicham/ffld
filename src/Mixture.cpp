@@ -128,6 +128,7 @@ double Mixture::train(const vector<Scene> & scenes, Object::Name name, int padx,
 {
 	path tmp_file(temp_directory_path());
 	tmp_file += unique_path();
+	BOOST_LOG_TRIVIAL(info) << "Tmp file: " << tmp_file.c_str();
 
 	if (empty() || scenes.empty() || (padx < 1) || (pady < 1) || (interval < 1) ||
 		(nbRelabel < 1) || (nbDatamine < 1) || (maxNegatives < models_.size()) || (C <= 0.0) ||
