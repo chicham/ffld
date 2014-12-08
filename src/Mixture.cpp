@@ -414,18 +414,19 @@ void Mixture::posLatentSearch(const vector<Scene> & scenes, Object::Name name, i
 		const JPEGImage image(scenes[i].filename());
 		
 		if (image.empty()) {
-			BOOST_LOG_TRIVIAL(warning) << "Latent positive: image empty";
-			positives.clear();
-			return;
+			BOOST_LOG_TRIVIAL(warning) << "Latent positive: image empty " << scenes[i].filename();
+			// positives.clear();
+			// return;
+			continue;
 		}
 		
 		const HOGPyramid pyramid(image, padx, pady, interval);
 		
 		if (pyramid.empty()) {
-			BOOST_LOG_TRIVIAL(warning) << "Latent positive: pyramid empty";
-			BOOST_LOG_TRIVIAL(info) << scenes[i].filename() << ":" << image.height() << "," << image.width();
-			positives.clear();
-			return;
+			BOOST_LOG_TRIVIAL(warning) << "Latent positive: pyramid empty " << scenes[i].filename();
+			// positives.clear();
+			// return;
+			continue;
 		}
 		
 		vector<HOGPyramid::Matrix> scores;
