@@ -409,14 +409,14 @@ int main(int argc, char * argv[])
 	
 	BOOST_LOG_TRIVIAL(info) << "Number of negative samples for train " << 5*nbPositives;
 	if (model.empty())
-		mixture.train(scenes, name, padding, padding, interval, nbRelabel / 2, nbDatamine, 5*nbPositives, C, J, overlap);
-		// mixture.train(scenes, name, padding, padding, interval, nbRelabel / 2, nbDatamine, 24000, C,
-		// 			  J, overlap);
+		// mixture.train(scenes, name, padding, padding, interval, nbRelabel / 2, nbDatamine, 5*nbPositives, C, J, overlap);
+		mixture.train(scenes, name, padding, padding, interval, nbRelabel / 2, nbDatamine, 24000, C, J, overlap);
 	
 	if (mixture.models()[0].parts().size() == 1)
 		mixture.initializeParts(8, make_pair(6, 6));
 	
-	mixture.train(scenes, name, padding, padding, interval, nbRelabel, nbDatamine, 5*nbPositives, C, J, overlap);
+	// mixture.train(scenes, name, padding, padding, interval, nbRelabel, nbDatamine, 5*nbPositives, C, J, overlap);
+	mixture.train(scenes, name, padding, padding, interval, nbRelabel, nbDatamine, 24000, C, J, overlap);
 	
 	// Try to open the result file
 	ofstream out(result.c_str(), ios::binary);

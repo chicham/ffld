@@ -176,8 +176,10 @@ double Mixture::train(const vector<Scene> & scenes, Object::Name name, int padx,
 			negLatentSearch(scenes, name, padx, pady, interval, maxNegatives, negatives);
 			
 			// Stop if there are no new hard negatives
-			if (datamine && (negatives.size() == j))
+			if (datamine && (negatives.size() == j)){
+				BOOST_LOG_TRIVIAL(warning) << "No new hard negatives";
 				break;
+			}
 			
 			// Merge the left / right samples for more efficient training
 			vector<int> posComponents(positives.size());
@@ -256,8 +258,10 @@ double Mixture::train(const vector<Scene> & scenes, Object::Name name, int padx,
 			out << (*this);
 			
 			// Stop if we are not making progress
-			if ((0.999 * loss < prevLoss) && (negatives.size() < maxNegatives))
+			if ((0.999 * loss < prevLoss) && (negatives.size() < maxNegatives)){
+				BOOST_LOG_TRIVIAL(warning) << "Don't make any progress";
 				break;
+			}
 			
 			prevLoss = loss;
 		}
