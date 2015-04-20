@@ -120,13 +120,13 @@ int main(int argc, char * argv[])
 	double overlap = 0.7;
 	int nbComponents = 3;
 	int nbNegativeScenes = -1;
-	
+
 	// Parse the parameters
 	CSimpleOpt args(argc, argv, SOptions);
 
 	logging::add_console_log();
 	path train_log;
-	
+
 	while (args.Next()) {
 		if (args.LastError() == SO_SUCCESS) {
 			if (args.OptionId() == OPT_RESULT) {
@@ -137,7 +137,7 @@ int main(int argc, char * argv[])
 			}
 			else if (args.OptionId() == OPT_C) {
 				C = atof(args.OptionArg());
-				
+
 				if (C <= 0) {
 					showUsage();
 					BOOST_LOG_TRIVIAL(fatal)<< "Invalid C arg " << args.OptionArg();
@@ -146,7 +146,7 @@ int main(int argc, char * argv[])
 			}
 			else if (args.OptionId() == OPT_DATAMINE) {
 				nbDatamine = atoi(args.OptionArg());
-				
+
 				if (nbDatamine <= 0) {
 					showUsage();
 					BOOST_LOG_TRIVIAL(fatal) << "Invalid datamine arg " << args.OptionArg();
@@ -155,7 +155,7 @@ int main(int argc, char * argv[])
 			}
 			else if (args.OptionId() == OPT_INTERVAL) {
 				interval = atoi(args.OptionArg());
-				
+
 				if (interval <= 0) {
 					showUsage();
 					BOOST_LOG_TRIVIAL(fatal) << "Invalid interval arg " << args.OptionArg();
@@ -168,7 +168,7 @@ int main(int argc, char * argv[])
 			}
 			else if (args.OptionId() == OPT_J) {
 				J = atof(args.OptionArg());
-				
+
 				if (J <= 0) {
 					showUsage();
 					BOOST_LOG_TRIVIAL(fatal) << "Invalid J arg " << args.OptionArg();
@@ -177,7 +177,7 @@ int main(int argc, char * argv[])
 			}
 			else if (args.OptionId() == OPT_RELABEL) {
 				nbRelabel = atoi(args.OptionArg());
-				
+
 				if (nbRelabel <= 0) {
 					showUsage();
 					BOOST_LOG_TRIVIAL(fatal) << "Invalid relabel arg " << args.OptionArg();
@@ -190,7 +190,7 @@ int main(int argc, char * argv[])
 			else if (args.OptionId() == OPT_NAME) {
 				string arg = args.OptionArg();
 				transform(arg.begin(), arg.end(), arg.begin(), static_cast<int (*)(int)>(tolower));
-				
+
 // Redefine names with categories
 // get number of categories from Names
 				// const string Names[LEN] =
@@ -207,42 +207,42 @@ int main(int argc, char * argv[])
               "car", "carrot", "cat", "cell phone", "chair", "clock", "couch",
               "cow", "cup", "dining table", "dog", "donut", "elephant",
               "fire hydrant", "fork", "frisbee", "giraffe", "hair drier",
-              "handbag", "horse", "hot_dog", "keyboard", "kite", "knife",
+              "handbag", "horse", "hot dog", "keyboard", "kite", "knife",
               "laptop", "microwave", "motorcycle", "mouse", "orange",
               "oven", "parking meter", "person", "pizza", "potted plant",
               "refrigerator", "remote", "sandwich", "scissors", "sheep",
               "sink", "skateboard", "skis", "snowboard", "spoon", "sports ball",
               "stop sign", "suitcase", "surfboard", "teddy bear", "tennis racket",
               "tie", "toaster", "toilet", "toothbrush", "traffic light", "train",
-              "truck", "tv", "umbrella", "vase", "wine", "zebra"
+              "truck", "tv", "umbrella", "vase", "wine glass", "zebra"
 				};
-				
+
 				const string * iter = find(Names, Names + 80, arg);
-				
+
 				if (iter == Names + 80) {
 					showUsage();
 					BOOST_LOG_TRIVIAL(fatal) << "Invalid name arg " << args.OptionArg();
 					return -1;
 				}
-				
+
 				name = static_cast<Object::Name>(iter - Names);
 			}
 			else if (args.OptionId() == OPT_PADDING) {
 				padding = atoi(args.OptionArg());
-				
+
 				if (padding <= 1) {
 					showUsage();
 					BOOST_LOG_TRIVIAL(fatal) << "Invalid padding arg " << args.OptionArg();
 					return -1;
 				}
 			}
-			
+
 			else if (args.OptionId() == OPT_SEED) {
 				seed = atoi(args.OptionArg());
 			}
 			else if (args.OptionId() == OPT_OVERLAP) {
 				overlap = atof(args.OptionArg());
-				
+
 				if ((overlap <= 0.0) || (overlap >= 1.0)) {
 					showUsage();
 					BOOST_LOG_TRIVIAL(fatal) << "Invalid overlap arg " << args.OptionArg();
@@ -251,7 +251,7 @@ int main(int argc, char * argv[])
 			}
 			else if (args.OptionId() == OPT_NB_COMP) {
 				nbComponents = atoi(args.OptionArg());
-				
+
 				if (nbComponents <= 0) {
 					showUsage();
 					BOOST_LOG_TRIVIAL(fatal) << "Invalid nb-components arg " << args.OptionArg();
@@ -260,7 +260,7 @@ int main(int argc, char * argv[])
 			}
 			else if (args.OptionId() == OPT_NB_NEG) {
 				nbNegativeScenes = atoi(args.OptionArg());
-				
+
 				if (nbNegativeScenes < 0) {
 					showUsage();
 					BOOST_LOG_TRIVIAL(fatal) << "Invalid nb-negatives arg " << args.OptionArg();
@@ -274,11 +274,11 @@ int main(int argc, char * argv[])
 			return -1;
 		}
 	}
-	
+
 	srand(seed);
 	srand48(seed);
 
-	
+
 	if (!args.FileCount()) {
 		showUsage();
 		BOOST_LOG_TRIVIAL(fatal) << "No dataset provided";
@@ -289,60 +289,60 @@ int main(int argc, char * argv[])
 		BOOST_LOG_TRIVIAL(fatal) << "More than one dataset provided";
 		return -1;
 	}
-	
+
 	// Open the image set file
 	const string file(args.File(0));
 	BOOST_LOG_TRIVIAL(info) << "ImageSet: " << file;
 	const size_t lastDot = file.find_last_of('.');
-	
+
 	if ((lastDot == string::npos) || (file.substr(lastDot) != ".txt")) {
 		showUsage();
 		cerr << "\nInvalid image set file " << file << ", should be .txt";
 		return -1;
 	}
-	
+
 	ifstream in(file.c_str());
-	
+
 	if (!in.is_open()) {
 		showUsage();
 		cerr << "\nInvalid image set file " << file;
 		return -1;
 	}
-	
+
 	// Find the annotations' folder (not sure that will work under Windows)
 	const string folder = file.substr(0, file.find_last_of("/\\")) + "/../../Annotations/";
-	
+
 	// Load all the scenes
 	int maxRows = 0;
 	int maxCols = 0;
 	int nbPositives = 0;
 	int nbNegatives = 0;
-	
+
 	vector<Scene> scenes;
-	
+
 	while (in) {
 		string line;
 		getline(in, line);
-		
+
 		// Skip empty lines
 		if (line.size() < 3){
 			BOOST_LOG_TRIVIAL(warning) << "Empty line";
 			continue;
 		}
-		
+
 		// Check whether the scene is positive or negative
 		const Scene scene(folder + line.substr(0, line.find(' ')) + ".xml");
-		
+
 		if (scene.empty())
 			continue;
-		
+
 		bool positive = false;
 		bool negative = true;
-		
+
 		for (int i = 0; i < scene.objects().size(); ++i) {
 			if (scene.objects()[i].name() == name) {
 				negative = false;
-				
+
 				if (!scene.objects()[i].difficult()){
 					positive = true;
 					nbPositives++;
@@ -352,13 +352,13 @@ int main(int argc, char * argv[])
 				nbNegatives++;
 		}
 
-		
+
 		if (positive || (negative && nbNegativeScenes)) {
 			scenes.push_back(scene);
-			
-			maxRows = max(maxRows, (scene.height() + 3) / 4 + padding);
+
+				maxRows = max(maxRows, (scene.height() + 3) / 4 + padding);
 			maxCols = max(maxCols, (scene.width() + 3) / 4 + padding);
-			
+
 			if (negative)
 				--nbNegativeScenes;
 		}
@@ -366,19 +366,19 @@ int main(int argc, char * argv[])
 
 	BOOST_LOG_TRIVIAL(info) << nbPositives << " positive samples";
 	BOOST_LOG_TRIVIAL(info) << nbNegatives << " negative samples";
-	
+
 	if (scenes.empty()) {
 		showUsage();
 		BOOST_LOG_TRIVIAL(fatal) << "Invalid image_set file " << file;
 		return -1;
 	}
-	
+
 	// Initialize the Patchwork class
 	if (!Patchwork::InitFFTW((maxRows + 15) & ~15, (maxCols + 15) & ~15)) {
 		BOOST_LOG_TRIVIAL(fatal)<< "Error initializing the FFTW library";
 		return - 1;
 	}
-	
+
 	// The mixture to train
 	Mixture mixture(nbComponents, scenes, name);
 
@@ -387,48 +387,48 @@ int main(int argc, char * argv[])
 		return -1;
 	}
 
-	
+
 	// Try to open the mixture
 	if (!model.empty()) {
 		ifstream in(model.c_str(), ios::binary);
-		
+
 		if (!in.is_open()) {
 			showUsage();
 			BOOST_LOG_TRIVIAL(fatal)<< "Invalid model file " << model;
 			return -1;
 		}
-		
+
 		in >> mixture;
-		
+
 		if (mixture.empty()) {
 			showUsage();
 			BOOST_LOG_TRIVIAL(fatal)<< "Invalid model file " << model;
 			return -1;
 		}
 	}
-	
+
 	BOOST_LOG_TRIVIAL(info) << "Number of negative samples for train " << 5*nbPositives;
 	if (model.empty())
 		// mixture.train(scenes, name, padding, padding, interval, nbRelabel / 2, nbDatamine, 5*nbPositives, C, J, overlap);
 		mixture.train(scenes, name, padding, padding, interval, nbRelabel / 2, nbDatamine, 24000, C, J, overlap);
-	
+
 	if (mixture.models()[0].parts().size() == 1)
 		mixture.initializeParts(8, make_pair(6, 6));
-	
+
 	// mixture.train(scenes, name, padding, padding, interval, nbRelabel, nbDatamine, 5*nbPositives, C, J, overlap);
 	mixture.train(scenes, name, padding, padding, interval, nbRelabel, nbDatamine, 24000, C, J, overlap);
-	
+
 	// Try to open the result file
 	ofstream out(result.c_str(), ios::binary);
-	
+
 	if (!out.is_open()) {
 		showUsage();
 		BOOST_LOG_TRIVIAL(fatal) << "Invalid result file " << result;
 		cout << mixture << endl; // Print the mixture as a last resort
 		return -1;
 	}
-	
+
 	out << mixture;
-	
+
 	return EXIT_SUCCESS;
 }

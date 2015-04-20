@@ -50,7 +50,7 @@ static inline Result content(const xmlNodePtr cur)
 {
 	if ((cur == NULL) || (cur->xmlChildrenNode == NULL))
 		return Result();
-	
+
 	istringstream iss(reinterpret_cast<const char *>(cur->xmlChildrenNode->content));
 	Result result;
 
@@ -62,7 +62,7 @@ template<>string content<string>(const xmlNodePtr cur)
 {
 	if ((cur == NULL) || (cur->xmlChildrenNode == NULL))
 		return string();
-	
+
 	istringstream iss(reinterpret_cast<const char *>(cur->xmlChildrenNode->content));
 	return  iss.str();
 }
@@ -77,68 +77,70 @@ Scene::Scene(const string & filename)
 	// 	"train", "tvmonitor"
 	// };
 
-        const string Names[80] =
-        {
-            "airplane", "apple", "backpack", "banana", "baseball bat",
-            "baseball glove", "bear", "bed", "bench", "bicycle", "bird",
-            "boat", "book", "bottle", "bowl", "broccoli", "bus", "cake",
-            "car", "carrot", "cat", "cell phone", "chair", "clock", "couch",
-            "cow", "cup", "dining table", "dog", "donut", "elephant",
-            "fire hydrant", "fork", "frisbee", "giraffe", "hair drier",
-            "handbag", "horse", "hot dog", "keyboard", "kite", "knife",
-            "laptop", "microwave", "motorcycle", "mouse", "orange",
-            "oven", "parking meter", "person", "pizza", "potted plant",
-            "refrigerator", "remote", "sandwich", "scissors", "sheep",
-            "sink", "skateboard", "skis", "snowboard", "spoon", "sports ball",
-            "stop sign", "suitcase", "surfboard", "teddy bear", "tennis racket",
-            "tie", "toaster", "toilet", "toothbrush", "traffic light", "train",
-            "truck", "tv", "umbrella", "vase", "wine", "zebra"
-        };
-	
+
+	const string Names[80] =
+		{
+			"airplane", "apple", "backpack", "banana", "baseball bat",
+			"baseball glove", "bear", "bed", "bench", "bicycle", "bird",
+			"boat", "book", "bottle", "bowl", "broccoli", "bus", "cake",
+			"car", "carrot", "cat", "cell phone", "chair", "clock", "couch",
+			"cow", "cup", "dining table", "dog", "donut", "elephant",
+			"fire hydrant", "fork", "frisbee", "giraffe", "hair drier",
+			"handbag", "horse", "hot dog", "keyboard", "kite", "knife",
+			"laptop", "microwave", "motorcycle", "mouse", "orange",
+			"oven", "parking meter", "person", "pizza", "potted plant",
+			"refrigerator", "remote", "sandwich", "scissors", "sheep",
+			"sink", "skateboard", "skis", "snowboard", "spoon", "sports ball",
+			"stop sign", "suitcase", "surfboard", "teddy bear", "tennis racket",
+			"tie", "toaster", "toilet", "toothbrush", "traffic light", "train",
+			"truck", "tv", "umbrella", "vase", "wine glass", "zebra"
+		};
+
+
 	const string Poses[4] =
-	{
-		"Frontal", "Left", "Rear", "Right"
-	};
-	
+		{
+			"Frontal", "Left", "Rear", "Right"
+		};
+
 	xmlDoc * doc = xmlParseFile(filename.c_str());
-	
+
 	if (doc == NULL) {
 		cerr << "Could not open " << filename << endl;
 		return;
 	}
-	
+
 	xmlNodePtr cur = xmlDocGetRootElement(doc);
-	
+
 	if (cur == NULL) {
 		xmlFreeDoc(doc);
 		cerr << "Could not open " << filename << endl;
 		return;
 	}
-	
+
 	if (xmlStrcmp(cur->name, reinterpret_cast<const xmlChar *>("annotation"))) {
 		xmlFreeDoc(doc);
 		cerr << "Could not open " << filename << endl;
 		return;
 	}
-	
+
 	cur = cur->xmlChildrenNode;
-	
+
 	while (cur != NULL) {
 		if (!xmlStrcmp(cur->name, reinterpret_cast<const xmlChar *>("filename"))) {
 			// Full path
 			size_t last = filename.rfind('/');
-			
+
 			if (last != string::npos) {
 				last = filename.rfind('/', last - 1);
-				
+
 				if (last != string::npos)
 					filename_ = filename.substr(0, last) + "/JPEGImages/" +
-								content<string>(cur);
+						content<string>(cur);
 			}
 		}
 		else if (!xmlStrcmp(cur->name, reinterpret_cast<const xmlChar *>("size"))) {
 			xmlNodePtr cur2 = cur->xmlChildrenNode;
-			
+
 			while (cur2 != NULL) {
 				if (!xmlStrcmp(cur2->name, reinterpret_cast<const xmlChar *>("width")))
 					width_ = content<int>(cur2);
@@ -146,27 +148,27 @@ Scene::Scene(const string & filename)
 					height_ = content<int>(cur2);
 				else if (!xmlStrcmp(cur2->name, reinterpret_cast<const xmlChar *>("depth")))
 					depth_ = content<int>(cur2);
-				
+
 				cur2 = cur2->next;
 			}
 		}
 		else if (!xmlStrcmp(cur->name, reinterpret_cast<const xmlChar *>("object"))) {
 			objects_.push_back(Object());
-			
+
 			xmlNodePtr cur2 = cur->xmlChildrenNode;
-			
+
 			while (cur2 != NULL) {
 				if (!xmlStrcmp(cur2->name, reinterpret_cast<const xmlChar *>("name"))) {
 					const string * iter =
 						find(Names, Names + 80, content<string>(cur2));
-					
+
 					if (iter != Names + 80)
 						objects_.back().setName(static_cast<Object::Name>(iter - Names));
 				}
 				else if (!xmlStrcmp(cur2->name, reinterpret_cast<const xmlChar *>("pose"))) {
 					const string * iter =
 						find(Poses, Poses + 4, content<string>(cur2));
-					
+
 					if (iter != Poses + 4)
 						objects_.back().setPose(static_cast<Object::Pose>(iter - Poses));
 				}
@@ -178,9 +180,9 @@ Scene::Scene(const string & filename)
 				}
 				else if (!xmlStrcmp(cur2->name, reinterpret_cast<const xmlChar *>("bndbox"))) {
 					Rectangle bndbox;
-					
+
 					xmlNodePtr cur3 = cur2->xmlChildrenNode;
-					
+
 					while (cur3 != NULL) {
 						if (!xmlStrcmp(cur3->name, reinterpret_cast<const xmlChar *>("xmin")))
 							bndbox.setX(content<int>(cur3));
@@ -190,10 +192,10 @@ Scene::Scene(const string & filename)
 							bndbox.setWidth(content<int>(cur3));
 						else if (!xmlStrcmp(cur3->name, reinterpret_cast<const xmlChar *>("ymax")))
 							bndbox.setHeight(content<int>(cur3));
-						
+
 						cur3 = cur3->next;
 					}
-					
+
 					// Only set the bounding box if all values have been assigned
 					if (bndbox.x() && bndbox.y() && bndbox.width() && bndbox.height()) {
 						bndbox.setX(bndbox.x() - 1);
@@ -203,14 +205,14 @@ Scene::Scene(const string & filename)
 						objects_.back().setBndbox(bndbox);
 					}
 				}
-				
+
 				cur2 = cur2->next;
 			}
 		}
-		
+
 		cur = cur->next;
 	}
-	
+
 	xmlFreeDoc(doc);
 }
 
@@ -268,34 +270,34 @@ ostream & FFLD::operator<<(ostream & os, const Scene & scene)
 {
 	os << scene.width() << ' ' << scene.height() << ' ' << scene.depth() << ' '
 	   << scene.objects().size() << ' ' << scene.filename() << endl;
-	
+
 	for (int i = 0; i < scene.objects().size(); ++i)
 		os << scene.objects()[i] << endl;
-	
+
 	return os;
 }
 
 istream & FFLD::operator>>(istream & is, Scene & scene)
 {
 	int width, height, depth, nbObjects;
-    
+
     is >> width >> height >> depth >> nbObjects;
 	is.get(); // Remove the space
-	
+
 	string filename;
 	getline(is, filename);
-	
+
 	vector<Object> objects(nbObjects);
-	
+
 	for (int i = 0; i < nbObjects; ++i)
 		is >> objects[i];
-	
+
 	if (!is) {
 		scene = Scene();
 		return is;
 	}
-	
+
 	scene = Scene(width, height, depth, filename, objects);
-	
+
 	return is;
 }
