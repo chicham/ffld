@@ -97,3 +97,4 @@ GRTAGS
 GTAGS
 .ycm_extra_conf.py
 .ycm_extra_conf.pyc
+../main/Session.vim
